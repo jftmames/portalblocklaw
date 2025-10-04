@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guía Lab 1: Hash Demo (SHA-256)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #0f172a; color: white; }
+        .font-bangers { font-family: 'Bangers', cursive; letter-spacing: 1px; }
+        .prose h1, .prose h2 { margin-top: 1.5em; margin-bottom: 0.5em; font-size: 2rem; border-bottom: 2px solid #334155; padding-bottom: 4px;}
+        .prose a { color: #3b82f6; text-decoration: underline; }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <div class="container mx-auto max-w-4xl">
+        <header class="mb-6">
+             <a href="labs.html" class="text-blue-400 hover:text-blue-200 font-bold">&larr; Volver a Laboratorios</a>
+            <h1 class="text-4xl md:text-5xl font-bangers text-white mt-4">LABORATORIO 1: HASH DEMO (SHA-256)</h1>
+        </header>
+
+        <section class="prose max-w-none text-gray-200">
+            <h2 class="text-3xl font-bold">Objetivo</h2>
+            <p>Comprender la sensibilidad a cambios mínimos en SHA-256 y la inmutabilidad que proporciona a una cadena de bloques.</p>
+
+            <h2 class="text-3xl font-bold">Entorno</h2>
+            <p>Google Colab (Python)</p>
+
+            <h2 class="text-3xl font-bold">Pasos</h2>
+            <ol class="list-decimal pl-6 space-y-3">
+                <li>Abre el notebook de Colab: <a href="https://colab.research.google.com/drive/1-demo-hash-sha256" target="_blank">https://colab.research.google.com/drive/1-demo-hash-sha256</a></li>
+                <li>**Celda 1:** Ejecuta la celda para instalar y importar las librerías necesarias.</li>
+                <li>**Celda 2:** Ejecuta la celda con el texto base (ej. "Contrato de Arrendamiento 2025"). Copia el hash resultante.</li>
+                <li>**Celda 2 (Modificación):** Modifica *solo un carácter* del texto base (ej. "Contrato de Arrendamiento 2026"). Ejecuta la celda de nuevo y observa el nuevo hash.</li>
+            </ol>
+
+            <h2 class="text-3xl font-bold">Entrega sugerida (Portafolio)</h2>
+            <p>Adjunta una captura de pantalla de los dos hashes (antes y después del cambio) y redacta un párrafo explicando cómo este "efecto avalancha" es fundamental para la seguridad e inmutabilidad de la cadena de bloques.</p>
+        </section>
+        
+        <footer class='mt-12 pt-6 border-t border-slate-700 text-sm text-gray-500'>
+            Esta guía es una conversión estática del archivo original de Markdown.
+        </footer>
+    </div>
+
+</body>
+</html>
