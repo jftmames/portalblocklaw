@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sesión 4: Mecanismos de Consenso I (PoW)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Inter:wght@400;700;900&family=Fira+Code:wght@500&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #0f172a; color: white; }
+        .font-bangers { font-family: 'Bangers', cursive; letter-spacing: 1px; }
+        .font-fira { font-family: 'Fira Code', monospace; }
+        .prose h3 { margin-top: 1.5em; margin-bottom: 0.5em; font-size: 1.75rem; border-bottom: 2px solid #334155; padding-bottom: 4px;}
+        .hash-valid { background-color: #052e16 !important; border-color: #16a34a !important; }
+        .mining-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <div class="container mx-auto max-w-6xl">
+        <a href="index.html" class="text-blue-400 hover:text-blue-200 font-bold">&larr; Volver al Portal</a>
+
+        <article>
+            <header class="mb-8 border-b border-slate-700 pb-4">
+                <h1 class="text-4xl font-extrabold tracking-tight mt-4">Mecanismos de consenso I: Proof of Work</h1>
+                <p class="text-lg text-gray-400 mt-1">Consenso · Miércoles 15 de octubre, 17:00–19:00h</p>
+                
+                <div class="mt-4">
+                    <button id="progreso-btn" class="text-sm border rounded px-3 py-1 font-medium transition-all focus:outline-none focus:ring-2 focus:ring-offset-2"></button>
+                </div>
+            </header>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                
+                <div class="lg:col-span-1 space-y-6">
+                    <h3>Simulador PoW (Minería)</h3>
+                     <p class="text-sm text-gray-400">Pulsa "Minar" para intentar encontrar un **Nonce** que haga que el Hash comience con **0000** (Dificultad).</p>
+                    
+                    <div class="bg-slate-800 p-4 rounded-xl border border-yellow-700 shadow-lg space-y-3">
+                        <label class="block font-bold text-yellow-300">Dato del Bloque (Fijo):</label>
+                        <p class="font-fira text-sm bg-slate-900 p-2 rounded">Transacciones + Merkle Root</p>
+
+                        <label class="block font-bold text-yellow-300">Nonce (Intento):</label>
+                        <p id="nonce-display" class="font-fira text-lg bg-slate-900 p-2 rounded text-red-400">0</p>
+                        
+                        <label class="block font-bold text-yellow-300">Hash (SHA-256 Mock):</label>
+                        <p id="hash-display" class="font-fira text-sm bg-slate-900 p-2 rounded text-white break-all">...</p>
+
+                        <button id="mine-btn" class="mining-btn w-full mt-3 bg-yellow-600 hover:bg-yellow-500 text-black font-bold py-3 rounded-lg transition duration-300">▶ Minar Bloque</button>
+                    </div>
+
+                    <h3>Objetivos de la Sesión</h3>
+                    <ul class="list-disc pl-6 text-gray-300 space-y-1">
+                        <li>Explicar por qué es necesario el consenso en un entorno P2P sin confianza.</li>
+                        <li>Describir el mecanismo de Proof of Work (PoW) y el concepto de *hash rate*.</li>
+                        <li>Analizar las implicaciones económicas, éticas y ambientales del PoW.</li>
+                    </ul>
+                </div>
+
+                <div class="lg:col-span-2 space-y-6">
+                    <h3>Contenidos Teóricos</h3>
+                    <ol class="list-decimal pl-6 text-gray-300 space-y-1">
+                        <li>El Problema de los Generales Bizantinos (BFT): ¿Cómo se ponen de acuerdo partes que no confían entre sí?</li>
+                        <li>La Minería y el Nonce: Encontrar un hash objetivo (con ceros iniciales) como prueba de gasto energético.</li>
+                        <li>Incentivos Económicos: Recompensa de bloque, comisiones y el modelo de seguridad.</li>
+                        <li>Análisis Crítico: El ataque del 51% y la huella de carbono del PoW.</li>
+                    </ol>
+                     <blockquote class="border-l-4 border-yellow-400 pl-4 py-2 italic text-gray-300">
+                        Proof of Work utiliza la energía como un mecanismo de votación para garantizar que alterar el pasado sea más costoso que participar honestamente en el futuro.
+                    </blockquote>
+                    
+                    <div class="mt-8 pt-6 border-t border-slate-700">
+                        <h3>Actividades y Debate</h3>
+                        <ul class="list-disc pl-6 text-gray-300 space-y-2">
+                            <li>**Debate Ético/Económico:** ¿Es PoW sostenible a largo plazo? ¿Qué desafíos regulatorios impone su consumo energético masivo?</li>
+                            <li>**Cálculo Simple:** Si la dificultad requiere 100 trillones de intentos, ¿cuánta potencia se necesita?</li>
+                        </ul>
+                    </div>
+
+                    <div class="border-t pt-4 mt-6">
+                        <h4 class="text-xl font-semibold mb-2">Lecturas y Recursos Sugeridos</h4>
+                        <ul class="list-disc pl-6 space-y-1">
+                            <li class="mt-1 text-gray-300">
+                                <a class="text-blue-400 underline hover:text-blue-200 transition-colors" href="#" target="_blank" rel="noreferrer">Artículo: Implicaciones ambientales del Proof of Work (UNEP)</a>
+                            </li>
+                            <li class="mt-1 text-gray-300">
+                                <a class="text-blue-400 underline hover:text-blue-200 transition-colors" href="#" target="_blank" rel="noreferrer">Concepto: El ataque del 51% y sus costes</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <footer class="mt-12 pt-6 border-t border-slate-700">
+                <p class="text-sm text-gray-500">
+                    **Resultados de Aprendizaje (RA):** RA3<br/>
+                    **Competencias:** CE2
+                </p>
+            </footer>
+        </article>
+    </div>
+
+    <script>
+        // ==========================================================
+        // MOCK HASHING FUNCTION (Deterministic for PoW)
+        // ==========================================================
+        function mockSHA256(data, nonce) {
+            const combined = data + nonce;
+            if (!combined) return '0000... (empty)';
+            
+            let hashValue = 0;
+            for(let i=0; i < combined.length; i++) {
+                hashValue = (hashValue << 5) - hashValue + combined.charCodeAt(i);
+                hashValue |= 0; 
+            }
+            // Simula un hash hex de 64 caracteres, dependiente del nonce
+            return Math.abs(hashValue * 99991).toString(16).padEnd(64, 'a').substring(0, 64);
+        }
+
+        // ==========================================================
+        // VANILLA JS SIMULATION: PROOF OF WORK
+        // ==========================================================
+        const nonceDisplay = document.getElementById('nonce-display');
+        const hashDisplay = document.getElementById('hash-display');
+        const mineBtn = document.getElementById('mine-btn');
+        const DATA = "Transacciones Merkle Root";
+        const DIFFICULTY = '0000'; // Target: hash must start with '0000'
+
+        let nonce = 0;
+        let isMining = false;
+        let miningInterval;
+
+        function updateHashDisplay(hash, isFound) {
+            hashDisplay.textContent = hash;
+            if (isFound) {
+                hashDisplay.classList.add('hash-valid');
+                nonceDisplay.classList.add('hash-valid');
+            } else {
+                hashDisplay.classList.remove('hash-valid');
+                nonceDisplay.classList.remove('hash-valid');
+            }
+        }
+
+        function mineStep() {
+            nonce++;
+            nonceDisplay.textContent = nonce;
+            
+            const currentHash = mockSHA256(DATA, nonce);
+            updateHashDisplay(currentHash, false);
+
+            if (currentHash.startsWith(DIFFICULTY)) {
+                // SOLUTION FOUND
+                stopMining(true);
+            }
+            
+            if (nonce > 100000) {
+                // Safety break for simulation (unlikely in real PoW)
+                stopMining(false);
+            }
+        }
+
+        function startMining() {
+            if (isMining) return;
+            isMining = true;
+            mineBtn.disabled = true;
+            mineBtn.textContent = 'Minando...';
+
+            // Reset only if the hash was already found
+            if (hashDisplay.classList.contains('hash-valid')) {
+                nonce = 0;
+            }
+
+            // High speed interval to simulate hash rate (100 attempts per second)
+            miningInterval = setInterval(mineStep, 10);
+        }
+
+        function stopMining(found) {
+            clearInterval(miningInterval);
+            isMining = false;
+            mineBtn.disabled = false;
+            
+            if (found) {
+                mineBtn.textContent = `¡BLOQUE MINADO! (Nonce: ${nonce})`;
+                updateHashDisplay(mockSHA256(DATA, nonce), true);
+            } else {
+                mineBtn.textContent = '▶ Minar Bloque';
+                updateHashDisplay(mockSHA256(DATA, nonce), false);
+            }
+        }
+
+        mineBtn.addEventListener('click', startMining);
+        // Initial setup
+        updateHashDisplay(mockSHA256(DATA, nonce), false);
+
+
+        // ==========================================================
+        // VANILLA JS COMPONENT: PROGRESO (Reemplazo de Progreso.tsx)
+        // ==========================================================
+        const progresoBtn = document.getElementById('progreso-btn');
+        const slug = 'session-04-consenso-pow';
+        const key = `prog:${slug}`;
+
+        function getInitialStatus() {
+            if (typeof window !== 'undefined') {
+                return localStorage.getItem(key) === '1';
+            }
+            return false;
+        }
+
+        let done = getInitialStatus();
+
+        function updateProgresoUI() {
+            if (done) {
+                progresoBtn.textContent = 'Completada ✅';
+                progresoBtn.className = 'text-sm border rounded px-3 py-1 font-medium transition-all bg-green-100 border-green-300 text-green-700 hover:bg-green-200 focus:ring-green-500';
+            } else {
+                progresoBtn.textContent = 'Marcar como completada';
+                progresoBtn.className = 'text-sm border rounded px-3 py-1 font-medium transition-all bg-white border-gray-300 text-gray-700 hover:bg-gray-50 focus:ring-gray-400';
+            }
+        }
+
+        progresoBtn.addEventListener('click', () => {
+            if (typeof window !== 'undefined') {
+                done = !done;
+                const v = done ? '1' : '0'; 
+                localStorage.setItem(key, v); 
+                updateProgresoUI();
+            }
+        });
+
+        updateProgresoUI();
+    </script>
+</body>
+</html>
