@@ -1,4 +1,4 @@
-// Archivo: js/simulations/blockchainSimulator.js (Versión Funcional)
+// Archivo: js/simulations/blockchainSimulator.js (Versión Final Robusta)
 
 import { mockSHA256 } from '../utils.js';
 
@@ -20,8 +20,9 @@ function initializeGlobalElements() {
     dataBlock1Input = document.getElementById('data-block1');
     recalculateBtn = document.getElementById('recalculate-btn');
     
-    if (!canvas) {
-        console.error("Canvas element not found!");
+    // 🛑 ATENCIÓN: Verificación defensiva de TODOS los elementos DOM 🛑
+    if (!canvas || !dataBlock1Input || !recalculateBtn) {
+        console.error("Error crítico: Falta un elemento DOM necesario para la simulación.");
         return false;
     }
     
@@ -49,6 +50,7 @@ function initializeGlobalElements() {
         prevHash: '' 
     };
     
+    // Inicializar valores
     initialHash1Value = mockSHA256(initialDataValue + INITIAL_HASH);
     
     if (dataBlock1Input.value.trim() === '' || dataBlock1Input.value.trim() === 'mn') {
@@ -99,6 +101,7 @@ export function drawChain() {
     canvas.height = 400;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     
+    // Re-inicializamos para asegurar que las coordenadas y valores iniciales sean correctos
     initializeGlobalElements();
 
     block1.data = dataBlock1Input.value;
@@ -148,10 +151,12 @@ export function drawChain() {
 export function initBlockchainSimulator() {
     if (!initializeGlobalElements()) return;
     
+    // Event listener para escribir (Input)
     dataBlock1Input.addEventListener('input', drawChain); 
     
-    // 🛑 SOLUCIÓN: Usar función anónima para asegurar que el evento llama a drawChain 🛑
+    // 🛑 Event listener para el botón (Click) - El recálculo debe funcionar 🛑
     recalculateBtn.addEventListener('click', (e) => {
+        // Al hacer clic, forzamos la reejecución de drawChain
         drawChain(); 
     });
     
