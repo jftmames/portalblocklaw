@@ -1,6 +1,5 @@
 // Archivo: js/simulations/blockchainSimulator.js (Versión Funcional)
 
-// 🛑 ESTE IMPORT AHORA FUNCIONARÁ GRACIAS AL 'export' EN utils.js 🛑
 import { mockSHA256 } from '../utils.js';
 
 const BLOCK_WIDTH = 280;
@@ -50,10 +49,8 @@ function initializeGlobalElements() {
         prevHash: '' 
     };
     
-    // 1. Calcular el hash de Block 1 en estado GENESIS (Fijo para la comprobación)
     initialHash1Value = mockSHA256(initialDataValue + INITIAL_HASH);
     
-    // 2. Establecer el valor inicial en el input si está vacío
     if (dataBlock1Input.value.trim() === '' || dataBlock1Input.value.trim() === 'mn') {
         dataBlock1Input.value = initialDataValue;
     }
@@ -152,7 +149,12 @@ export function initBlockchainSimulator() {
     if (!initializeGlobalElements()) return;
     
     dataBlock1Input.addEventListener('input', drawChain); 
-    recalculateBtn.addEventListener('click', drawChain);
+    
+    // 🛑 SOLUCIÓN: Usar función anónima para asegurar que el evento llama a drawChain 🛑
+    recalculateBtn.addEventListener('click', (e) => {
+        drawChain(); 
+    });
+    
     window.addEventListener('resize', drawChain);
     
     drawChain(); 
