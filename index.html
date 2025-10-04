@@ -3,115 +3,76 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blockchain: Portal Docente Interactivo</title>
+    <title>Blockchain: Portal Docente</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #0f172a; /* slate-900 */
-        }
-        .font-bangers {
-            font-family: 'Bangers', cursive;
-            letter-spacing: 1px;
-        }
-        /* Estilo de panel de cómic para las tarjetas */
-        .comic-panel {
-            background-color: white;
-            border: 4px solid #1e293b; /* slate-800 */
-            box-shadow: 8px 8px 0px #38bdf8; /* sky-400 */
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-        .comic-panel:hover {
-            transform: scale(1.05) rotate(-2deg);
-            box-shadow: 12px 12px 0px #38bdf8;
-        }
-        .title-splash {
-            background-color: #3b82f6; /* blue-500 */
-            color: white;
-            padding: 1rem 2rem;
-            border: 4px solid black;
-            clip-path: polygon(0 10%, 100% 0, 100% 90%, 0% 100%);
-            text-shadow: 3px 3px 0px #1e293b;
-        }
-    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="css/theme.css" rel="stylesheet"> 
 </head>
-<body class="text-black p-4 md:p-8">
+<body class="p-4 md:p-8">
 
     <div class="container mx-auto max-w-6xl">
-        <header class="text-center mb-12">
-            <div class="inline-block">
-                <div class="title-splash">
-                    <h1 class="text-5xl md:text-7xl font-bangers">¡¡PORTAL BLOCKCHAIN: UNIE!!</h1>
-                </div>
-            </div>
-            <p class="text-xl mt-4 text-white">Fundamentos técnicos y problemática jurídica</p>
+        <header class="text-center mb-10">
+            <h1 class="text-4xl md:text-6xl font-extrabold text-blue-500">Blockchain · UNIE</h1>
+            <h2 class="text-xl md:text-2xl text-gray-400 mt-2">Fundamentos técnicos y problemática jurídica</h2>
         </header>
 
-        <nav class="flex justify-center flex-wrap gap-4 mb-10 text-lg font-bold">
-            <a href="programa.html" class="text-blue-400 hover:text-blue-200">Programa</a>
-            <a href="calendario.html" class="text-blue-400 hover:text-blue-200">Calendario</a>
-            <a href="sesiones.html" class="text-blue-400 hover:text-blue-200">Sesiones</a>
-            <a href="labs.html" class="text-blue-400 hover:text-blue-200">Laboratorios</a>
-            <a href="evaluacion.html" class="text-blue-400 hover:text-blue-200">Evaluación</a>
-            <a href="proyecto_final.html" class="text-blue-400 hover:text-blue-200">Proyecto Final</a>
-        </nav>
+        <div id="nav-placeholder" class="mb-10"></div>
 
-        <main class="grid md:grid-cols-3 gap-8">
-            <a href="programa.html" class="comic-panel group bg-gray-100">
-                <div class="p-6">
-                    <h3 class="text-3xl font-bangers mb-2 group-hover:text-blue-700">PROGRAMA COMPLETO</h3>
-                    <p class="mt-4 text-gray-700">Visión de 15 semanas y objetivos de aprendizaje.</p>
-                </div>
+        <main class="grid md:grid-cols-3 gap-6">
+            <a href="programa.html" class="content-block hover:border-blue-500 transition-colors space-y-1">
+                <h3 class="text-xl font-semibold text-white">Programa Completo</h3>
+                <p class="text-sm text-gray-400">Visión de 15 semanas y objetivos de aprendizaje.</p>
             </a>
-            
-            <a href="sesiones.html" class="comic-panel group bg-gray-100">
-                <div class="p-6">
-                    <h3 class="text-3xl font-bangers mb-2 group-hover:text-blue-700">ÍNDICE DE SESIONES</h3>
-                    <p class="mt-4 text-gray-700">Accede a lecturas, labs y actividades de cada clase.</p>
-                </div>
+            <a href="sesiones.html" class="content-block hover:border-blue-500 transition-colors space-y-1">
+                <h3 class="text-xl font-semibold text-white">Índice de Sesiones (30)</h3>
+                <p class="text-sm text-gray-400">Accede a las lecturas, labs y actividades de cada clase.</p>
             </a>
-            
-            <a href="evaluacion.html" class="comic-panel group bg-gray-100">
-                <div class="p-6">
-                    <h3 class="text-3xl font-bangers mb-2 group-hover:text-blue-700">RÚBRICAS EEE</h3>
-                    <p class="mt-4 text-gray-700">Consulta los criterios de evaluación y el Proyecto Final.</p>
-                </div>
+            <a href="evaluacion.html" class="content-block hover:border-blue-500 transition-colors space-y-1">
+                <h3 class="text-xl font-semibold text-white">Rúbricas y EEE</h3>
+                <p class="text-sm text-gray-400">Consulta los criterios de evaluación y el Proyecto Final.</p>
             </a>
         </main>
         
-        <div class="mt-12 pt-6">
-            <h2 class="text-3xl font-bangers mb-4 text-white">PRÓXIMAS SESIONES</h2>
-            <ul class="space-y-4 text-white">
-                <li class="border-l-4 border-yellow-400 pl-4 py-2 hover:bg-slate-800 transition-colors">
-                    <a href="session-01-que-es-blockchain.html" class="block">
-                        <span class="font-medium text-lg">Qué es Blockchain y por qué importa</span> — 
-                        <span class="text-sm text-gray-400 ml-2">Martes 7 de Octubre</span>
-                    </a>
-                </li>
-                <li class="border-l-4 border-yellow-400 pl-4 py-2 hover:bg-slate-800 transition-colors">
-                    <a href="session-02-historia-confianza-hash.html" class="block">
-                        <span class="font-medium text-lg">Historia de la confianza: del contrato al hash</span> — 
-                        <span class="text-sm text-gray-400 ml-2">Miércoles 8 de Octubre</span>
-                    </a>
-                </li>
-                <li class="border-l-4 border-yellow-400 pl-4 py-2 hover:bg-slate-800 transition-colors">
-                    <a href="session-03-como-funciona-una-cadena.html" class="block">
-                        <span class="font-medium text-lg">Cómo funciona una cadena de bloques</span> — 
-                        <span class="text-sm text-gray-400 ml-2">Martes 14 de Octubre</span>
-                    </a>
-                </li>
-                <li class="border-l-4 border-yellow-400 pl-4 py-2 hover:bg-slate-800 transition-colors">
-                    <a href="session-04-consenso-pow.html" class="block">
-                        <span class="font-medium text-lg">Mecanismos de consenso I: Proof of Work</span> — 
-                        <span class="text-sm text-gray-400 ml-2">Miércoles 15 de Octubre</span>
-                    </a>
-                </li>
-            </ul>
+        <div class='pt-10 mt-10 border-t border-slate-700'>
+            <h2 class="text-2xl font-semibold mb-4 text-white">Próximas Sesiones</h2>
+            <ul id="proximas-sesiones-list" class="space-y-3">
+                </ul>
         </div>
     </div>
 
+    <script src="js/utils.js"></script> 
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            // 1. Inyectar navegación
+            injectNavigation();
+
+            // 2. Cargar datos de forma robusta
+            const sesiones = await fetchSesionesData();
+            
+            // 3. Generar listado dinámicamente
+            const list = document.getElementById('proximas-sesiones-list');
+            list.innerHTML = '';
+
+            if (sesiones.length === 0) {
+                 list.innerHTML = '<li class="text-red-400">ERROR: No se pudo cargar el programa de sesiones.</li>';
+                 return;
+            }
+
+            // Muestra las primeras 4 sesiones
+            sesiones.slice(0, 4).forEach(s => {
+                const li = document.createElement('li');
+                li.className = "border-l-4 border-blue-500 pl-4 py-2 hover:bg-slate-800 transition-colors rounded-r-md";
+                li.innerHTML = `
+                    <a href="${s.slug}.html" class="block accent-link">
+                        <span class="font-medium text-white">${s.titulo}</span> — 
+                        <span class="text-sm text-gray-400 ml-2">${s.dia} ${s.fechaFormato}</span>
+                    </a>
+                `;
+                list.appendChild(li);
+            });
+        });
+    </script>
 </body>
 </html>
