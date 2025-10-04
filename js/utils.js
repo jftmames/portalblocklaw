@@ -1,8 +1,7 @@
-// Archivo: js/utils.js (CORREGIDO)
+// Archivo: js/utils.js
 
 // ==========================================================
 // MÓDULO: Hashing y Utilitarios de Datos
-// Se añade 'export' para que pueda ser importada.
 // ==========================================================
 
 export function mockSHA256(text, nonce = 0) {
@@ -52,7 +51,7 @@ export function injectNavigation(selector = '#nav-placeholder') {
 }
 
 // ==========================================================
-// MÓDULO: Lógica de Progreso (Estado y Estilo Moderno)
+// MÓDULO: Lógica de Progreso
 // ==========================================================
 export function initProgresoButton(slug) {
     const progresoBtn = document.getElementById('progreso-btn');
