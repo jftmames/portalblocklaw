@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sesión 3: Cómo funciona una cadena de bloques</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Inter:wght@400;700;900&family=Fira+Code:wght@500&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #0f172a; color: white; }
+        .font-bangers { font-family: 'Bangers', cursive; letter-spacing: 1px; }
+        .font-fira { font-family: 'Fira Code', monospace; }
+        .prose h3 { margin-top: 1.5em; margin-bottom: 0.5em; font-size: 1.75rem; border-bottom: 2px solid #334155; padding-bottom: 4px;}
+        canvas { background-color: #1e293b; }
+        .merkle-root { border: 3px solid #facc15; }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <div class="container mx-auto max-w-6xl">
+        <a href="index.html" class="text-blue-400 hover:text-blue-200 font-bold">&larr; Volver al Portal</a>
+
+        <article>
+            <header class="mb-8 border-b border-slate-700 pb-4">
+                <h1 class="text-4xl font-extrabold tracking-tight mt-4">Cómo funciona una cadena de bloques</h1>
+                <p class="text-lg text-gray-400 mt-1">Arquitectura · Martes 14 de octubre, 17:00–19:00h</p>
+                
+                <div class="mt-4">
+                    <button id="progreso-btn" class="text-sm border rounded px-3 py-1 font-medium transition-all focus:outline-none focus:ring-2 focus:ring-offset-2"></button>
+                </div>
+            </header>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                
+                <div class="lg:col-span-1 space-y-6">
+                    <h3>Control de Transacciones</h3>
+                     <p class="text-sm text-gray-400">Modifica una transacción (T), observa cómo se recalcula la raíz de Merkle (M) y, por lo tanto, cómo cambia el hash del bloque.</p>
+                    
+                    <div class="space-y-3">
+                        <label for="tx1" class="block font-bold mb-1 text-yellow-300">T1:</label>
+                        <input type="text" id="tx1" value="Alice paga 1 BTC a Bob" class="w-full p-2 bg-slate-900 border border-slate-700 rounded-lg font-fira text-sm">
+                        
+                        <label for="tx2" class="block font-bold mb-1 text-yellow-300">T2:</label>
+                        <input type="text" id="tx2" value="Charlie compra un café" class="w-full p-2 bg-slate-900 border border-slate-700 rounded-lg font-fira text-sm">
+                         <label for="tx3" class="block font-bold mb-1 text-yellow-300">T3:</label>
+                        <input type="text" id="tx3" value="Venta de un NFT" class="w-full p-2 bg-slate-900 border border-slate-700 rounded-lg font-fira text-sm">
+                    </div>
+                </div>
+
+                <div class="lg:col-span-2">
+                    <h3>Visualizador de Merkle Tree</h3>
+                    <canvas id="merkleCanvas" class="w-full h-96 rounded-xl border border-slate-600 shadow-2xl"></canvas>
+                    <div class="text-center mt-4">
+                        <p class="text-lg font-bold text-yellow-400">Raíz de Merkle (M):</p>
+                        <div id="merkle-root-display" class="merkle-root inline-block p-2 bg-slate-800 rounded-lg font-fira text-sm break-all"></div>
+                    </div>
+                </div>
+            </div>
+
+            <section class="prose max-w-none text-gray-200 mt-8 pt-6 border-t border-slate-700">
+                <h3>Contenidos Teóricos</h3>
+                <ol class="list-decimal pl-6 space-y-2">
+                    <li>**La Estructura del Bloque:** Cabecera, cuerpo y el papel del *nonce*.</li>
+                    <li>**El Enlace Criptográfico:** Cómo el hash del bloque anterior garantiza la inmutabilidad de la cadena.</li>
+                    <li>**Transacciones y Merkle Tree:** Cómo se consolidan miles de transacciones en un solo hash.</li>
+                    <li>**Modelo de Propagación:** Nodos completos, nodos ligeros y la difusión de bloques.</li>
+                </ol>
+                <blockquote class="border-l-4 border-blue-400 pl-4 py-2 mt-4 italic text-gray-300">
+                    La inmutabilidad de la cadena es una propiedad emergente de la criptografía y el consenso distribuido, no una característica intrínseca.
+                </blockquote>
+
+                <h3>Actividades y Debate</h3>
+                <ul class="list-disc pl-6 space-y-2">
+                    <li>**Taller de Conceptos:** Dibuja el diagrama de cómo se enlaza el Bloque 10 con el Bloque 11. ¿Qué ocurriría si un atacante cambiara una transacción en el Bloque 5?</li>
+                    <li>**Discusión Jurídica:** Si una transacción es "inválida" legalmente (e.g., coacción), pero "válida" técnicamente (firmada y minada), ¿qué prevalece?</li>
+                </ul>
+
+                <div class="border-t pt-4 mt-6">
+                    <h4 class="text-xl font-semibold mb-2">Laboratorio Sugerido</h4>
+                     <a href="rsa-simplificado-colab.html" target="_blank" rel="noreferrer" class="block border rounded-xl p-4 no-underline hover:bg-slate-800 transition-colors my-4 shadow-sm border-blue-600">
+                        <div class="text-sm text-blue-400 font-mono flex items-center gap-2">
+                            <span>Laboratorio guiado</span>
+                        </div>
+                        <div class="font-semibold text-lg mt-1">Laboratorio 2: Clave Pública y Firma Digital (RSA)</div>
+                        <p class="text-gray-400 text-sm mt-1">Genera pares de claves (Pública/Privada) y úsalas para simular una firma digital de una transacción.</p>
+                     </a>
+                </div>
+            </section>
+            
+            <footer class="mt-12 pt-6 border-t border-slate-700">
+                <p class="text-sm text-gray-500">
+                    **Resultados de Aprendizaje (RA):** RA2.1, RA2.2<br/>
+                    **Competencias:** CB2
+                </p>
+            </footer>
+        </article>
+    </div>
+
+    <script>
+        // ==========================================================
+        // MOCK HASHING FUNCTION (Deterministic for Merkle Tree)
+        // ==========================================================
+        function mockSHA256(text) {
+            if (!text) return '0000000000000000';
+            
+            let hashValue = 0;
+            for(let i=0; i < text.length; i++) {
+                hashValue = (hashValue << 5) - hashValue + text.charCodeAt(i);
+                hashValue |= 0; 
+            }
+            // Retorna un hash corto (16 caracteres) para simplificar la visualización
+            return Math.abs(hashValue).toString(16).padStart(16, '0');
+        }
+
+        // ==========================================================
+        // VANILLA JS SIMULATION: MERKLE TREE VISUALIZER
+        // ==========================================================
+        const canvas = document.getElementById('merkleCanvas');
+        const ctx = canvas.getContext('2d');
+        const rootDisplay = document.getElementById('merkle-root-display');
+        
+        const txInputs = [document.getElementById('tx1'), document.getElementById('tx2'), document.getElementById('tx3')];
+        const initialTxData = txInputs.map(input => input.value);
+        
+        // Add a placeholder/empty transaction to ensure a power of 2 structure
+        const txData = [...initialTxData, "Placeholder Tx"];
+        
+        const NODE_RADIUS = 15;
+        const NODE_HEIGHT = 80;
+
+        function drawMerkleTree() {
+            canvas.width = canvas.parentElement.clientWidth;
+            canvas.height = 384; 
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            const txValues = txInputs.map(input => input.value);
+            const data = [...txValues, "Placeholder Tx"]; // T1, T2, T3, T4
+            
+            // 1. Calculate Hashes (Level 0 - Leaves)
+            const hashes = data.map(tx => mockSHA256(tx));
+
+            // 2. Build Tree Structure
+            // Level 1: H12 = Hash(H1 + H2), H34 = Hash(H3 + H4)
+            const h12 = mockSHA256(hashes[0] + hashes[1]);
+            const h34 = mockSHA256(hashes[2] + hashes[3]);
+            
+            // Level 2: Merkle Root
+            const merkleRoot = mockSHA256(h12 + h34);
+
+            // 3. Draw Nodes (Helper)
+            function drawNode(x, y, hash, isRoot = false) {
+                ctx.beginPath();
+                ctx.arc(x, y, NODE_RADIUS, 0, Math.PI * 2);
+                ctx.fillStyle = isRoot ? '#facc15' : '#3b82f6'; // Yellow for Root, Blue for internal
+                ctx.fill();
+                ctx.strokeStyle = 'white';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+                
+                ctx.fillStyle = 'white';
+                ctx.font = '8px Fira Code';
+                ctx.textAlign = 'center';
+                ctx.fillText(hash.substring(0, 10), x, y + 25);
+            }
+            
+            // 4. Draw Edges (Helper)
+            function drawEdge(x1, y1, x2, y2) {
+                ctx.strokeStyle = '#94a3b8'; // slate-400
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.moveTo(x1, y1 + NODE_RADIUS);
+                ctx.lineTo(x2, y2 - NODE_RADIUS);
+                ctx.stroke();
+            }
+
+            // --- Positions (Based on 4-leaf tree) ---
+            const w = canvas.width;
+            const h = canvas.height;
+            const yRoot = 50;
+            const yLevel1 = yRoot + NODE_HEIGHT;
+            const yLevel0 = yLevel1 + NODE_HEIGHT;
+            
+            const xRoot = w / 2;
+            const xL1_L = w * 0.33;
+            const xL1_R = w * 0.67;
+            
+            const xL0 = [w * 0.1, w * 0.3, w * 0.55, w * 0.75]; // T1, T2, T3, T4
+
+            // --- DRAWING ---
+            
+            // Level 0 (Leaves / Transactions)
+            drawNode(xL0[0], yLevel0, hashes[0]);
+            drawNode(xL0[1], yLevel0, hashes[1]);
+            drawNode(xL0[2], yLevel0, hashes[2]);
+            drawNode(xL0[3], yLevel0, hashes[3]);
+
+            // Level 1 (Internal Hashes)
+            drawEdge(xL1_L, yLevel1, xL0[0], yLevel0);
+            drawEdge(xL1_L, yLevel1, xL0[1], yLevel0);
+            drawNode(xL1_L, yLevel1, h12);
+
+            drawEdge(xL1_R, yLevel1, xL0[2], yLevel0);
+            drawEdge(xL1_R, yLevel1, xL0[3], yLevel0);
+            drawNode(xL1_R, yLevel1, h34);
+
+            // Level 2 (Merkle Root)
+            drawEdge(xRoot, yRoot, xL1_L, yLevel1);
+            drawEdge(xRoot, yRoot, xL1_R, yLevel1);
+            drawNode(xRoot, yRoot, merkleRoot, true);
+            
+            rootDisplay.textContent = merkleRoot;
+        }
+
+        // --- Event Listeners ---
+        txInputs.forEach(input => input.addEventListener('input', drawMerkleTree));
+        window.addEventListener('resize', drawMerkleTree);
+        drawMerkleTree(); 
+
+        // ==========================================================
+        // VANILLA JS COMPONENT: PROGRESO (Reemplazo de Progreso.tsx)
+        // ==========================================================
+        const progresoBtn = document.getElementById('progreso-btn');
+        const slug = 'session-03-como-funciona-una-cadena';
+        const key = `prog:${slug}`;
+
+        function getInitialStatus() {
+            if (typeof window !== 'undefined') {
+                return localStorage.getItem(key) === '1';
+            }
+            return false;
+        }
+
+        let done = getInitialStatus();
+
+        function updateProgresoUI() {
+            if (done) {
+                progresoBtn.textContent = 'Completada ✅';
+                progresoBtn.className = 'text-sm border rounded px-3 py-1 font-medium transition-all bg-green-100 border-green-300 text-green-700 hover:bg-green-200 focus:ring-green-500';
+            } else {
+                progresoBtn.textContent = 'Marcar como completada';
+                progresoBtn.className = 'text-sm border rounded px-3 py-1 font-medium transition-all bg-white border-gray-300 text-gray-700 hover:bg-gray-50 focus:ring-gray-400';
+            }
+        }
+
+        progresoBtn.addEventListener('click', () => {
+            if (typeof window !== 'undefined') {
+                done = !done;
+                const v = done ? '1' : '0'; 
+                localStorage.setItem(key, v); 
+                updateProgresoUI();
+            }
+        });
+
+        updateProgresoUI();
+    </script>
+</body>
+</html>
