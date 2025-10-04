@@ -1,9 +1,11 @@
+// Archivo: js/utils.js (CORREGIDO)
+
 // ==========================================================
 // MÓDULO: Hashing y Utilitarios de Datos
+// Se añade 'export' para que pueda ser importada.
 // ==========================================================
 
-// Mock SHA-256 Hashing Function (Centralizada y reutilizada)
-function mockSHA256(text, nonce = 0) {
+export function mockSHA256(text, nonce = 0) {
     const combined = String(text) + String(nonce);
     if (!combined) return '0000000000000000000000000000000000000000000000000000000000000000';
     
@@ -16,8 +18,7 @@ function mockSHA256(text, nonce = 0) {
     return mockHash.substring(0, 64);
 }
 
-// Función para cargar datos de forma robusta
-async function fetchSesionesData(url = 'data/sesiones.json') {
+export async function fetchSesionesData(url = 'data/sesiones.json') {
     try {
         const response = await fetch(url);
         if (!response.ok) {
@@ -26,7 +27,6 @@ async function fetchSesionesData(url = 'data/sesiones.json') {
         return await response.json();
     } catch (error) {
         console.error('FALLO DE ROBUSTEZ: Error al cargar sesiones.json', error);
-        // Retorna un array vacío para evitar que el script falle
         return [];
     }
 }
@@ -36,7 +36,7 @@ async function fetchSesionesData(url = 'data/sesiones.json') {
 // MÓDULO: Plantillas y Navegación
 // ==========================================================
 
-function injectNavigation(selector = '#nav-placeholder') {
+export function injectNavigation(selector = '#nav-placeholder') {
     const navPlaceholder = document.querySelector(selector);
     if (navPlaceholder) {
         fetch('templates/header.html')
@@ -54,7 +54,7 @@ function injectNavigation(selector = '#nav-placeholder') {
 // ==========================================================
 // MÓDULO: Lógica de Progreso (Estado y Estilo Moderno)
 // ==========================================================
-function initProgresoButton(slug) {
+export function initProgresoButton(slug) {
     const progresoBtn = document.getElementById('progreso-btn');
     if (!progresoBtn) return;
     
@@ -71,11 +71,9 @@ function initProgresoButton(slug) {
 
     function updateProgresoUI() {
         if (done) {
-            // Estilo Moderno: Verde Esmeralda para completado
             progresoBtn.textContent = 'Completada ✅';
             progresoBtn.className = 'text-sm border rounded px-3 py-1 font-medium transition-all bg-emerald-700 border-emerald-500 text-white hover:bg-emerald-600 focus:ring-emerald-500';
         } else {
-            // Estilo Moderno: Gris/Neutro para pendiente
             progresoBtn.textContent = 'Marcar como completada';
             progresoBtn.className = 'text-sm border rounded px-3 py-1 font-medium transition-all bg-slate-700 border-slate-600 text-gray-300 hover:bg-slate-600 focus:ring-slate-500';
         }
