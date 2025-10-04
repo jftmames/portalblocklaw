@@ -20,7 +20,6 @@ function initializeGlobalElements() {
     dataBlock1Input = document.getElementById('data-block1');
     recalculateBtn = document.getElementById('recalculate-btn');
     
-    // 🛑 ATENCIÓN: Verificación defensiva de TODOS los elementos DOM 🛑
     if (!canvas || !dataBlock1Input || !recalculateBtn) {
         console.error("Error crítico: Falta un elemento DOM necesario para la simulación.");
         return false;
@@ -50,7 +49,6 @@ function initializeGlobalElements() {
         prevHash: '' 
     };
     
-    // Inicializar valores
     initialHash1Value = mockSHA256(initialDataValue + INITIAL_HASH);
     
     if (dataBlock1Input.value.trim() === '' || dataBlock1Input.value.trim() === 'mn') {
@@ -151,12 +149,10 @@ export function drawChain() {
 export function initBlockchainSimulator() {
     if (!initializeGlobalElements()) return;
     
-    // Event listener para escribir (Input)
     dataBlock1Input.addEventListener('input', drawChain); 
     
-    // 🛑 Event listener para el botón (Click) - El recálculo debe funcionar 🛑
+    // 🛑 VINCULACIÓN FINAL: El listener del botón está garantizado para llamar a drawChain 🛑
     recalculateBtn.addEventListener('click', (e) => {
-        // Al hacer clic, forzamos la reejecución de drawChain
         drawChain(); 
     });
     
