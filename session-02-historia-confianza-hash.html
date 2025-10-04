@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sesión 2: Del Contrato al Hash</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Inter:wght@400;700;900&family=Fira+Code:wght@500&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #0f172a; color: white; }
+        .font-bangers { font-family: 'Bangers', cursive; letter-spacing: 1px; }
+        .font-fira { font-family: 'Fira Code', monospace; }
+        .prose h3 { margin-top: 1.5em; margin-bottom: 0.5em; font-size: 1.75rem; border-bottom: 2px solid #334155; padding-bottom: 4px;}
+        .hash-result { transition: background-color 0.1s; }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <div class="container mx-auto max-w-4xl">
+        <a href="index.html" class="text-blue-400 hover:text-blue-200 font-bold">&larr; Volver al Portal</a>
+
+        <article>
+            <header class="mb-8 border-b border-slate-700 pb-4">
+                <h1 class="text-4xl font-extrabold tracking-tight mt-4">Historia de la confianza: del contrato al hash</h1>
+                <p class="text-lg text-gray-400 mt-1">Introducción · Miércoles 8 de octubre, 17:00–19:00h</p>
+                
+                <div class="mt-4">
+                    <button id="progreso-btn" class="text-sm border rounded px-3 py-1 font-medium transition-all focus:outline-none focus:ring-2 focus:ring-offset-2"></button>
+                </div>
+            </header>
+
+            <div class="prose max-w-none prose-lg text-gray-200">
+                
+                <section>
+                    <h3>Objetivos de la Sesión</h3>
+                    <ul class="list-disc pl-6 space-y-2">
+                        <li>Entender el problema histórico de la doble contabilidad y la necesidad de un tercero de confianza.</li>
+                        <li>Definir qué es una función hash y comprender sus propiedades criptográficas clave (determinismo, efecto avalancha, resistencia a colisiones).</li>
+                        <li>Relacionar el hash con el concepto de integridad de la prueba digital.</li>
+                    </ul>
+                </section>
+                
+                <section>
+                    <h3>Simulación Interactiva: Efecto Avalancha (SHA-256)</h3>
+                    <p class="text-gray-400">Introduce un texto. Modifica un solo carácter y observa cómo el hash resultante cambia completamente (efecto avalancha).</p>
+                    
+                    <div class="bg-slate-800 p-6 rounded-xl border border-slate-700 space-y-4">
+                        <label for="input-text" class="block font-bold">Texto de Entrada:</label>
+                        <textarea id="input-text" class="w-full p-3 bg-slate-900 border border-slate-700 rounded-lg font-fira text-yellow-300" rows="3">UNIE: Portal Docente Blockchain</textarea>
+                        
+                        <label for="output-hash" class="block font-bold">Hash Resultante (SHA-256 Mock):</label>
+                        <div id="output-hash" class="hash-result p-3 bg-slate-900 border border-slate-700 rounded-lg font-fira text-red-400 break-all text-sm">... Escribe algo para calcular el hash ...</div>
+                    </div>
+                </section>
+
+                <section>
+                    <h3>Contenidos Teóricos</h3>
+                    <ol class="list-decimal pl-6 space-y-2">
+                        <li>**Sistemas de Confianza:** De la tradición oral al notario y al banco central.</li>
+                        <li>**Criptografía Primitiva (Hashing):** SHA-256 como herramienta de verificación de integridad.</li>
+                        <li>**El Hash como Prueba:** Aplicación legal en la custodia de documentos y la prueba de existencia (sellado de tiempo).</li>
+                    </ol>
+                    <blockquote class="border-l-4 border-blue-400 pl-4 py-2 mt-4 italic text-gray-300">
+                        El hash no es un cifrado. Es una huella digital única e irreversible que prueba que un contenido no ha sido modificado.
+                    </blockquote>
+                </section>
+
+                <section>
+                    <h3>Actividades y Debate</h3>
+                    <ul class="list-disc pl-6 space-y-2">
+                        <li>**Minicaso Práctico:** El uso de *timestamping* criptográfico.</li>
+                        <li>Si un contrato se registra con un hash, ¿qué prueba exactamente la cadena? ¿La validez legal o solo la inmutabilidad de su contenido?</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <div class="border-t pt-4 mt-6">
+                        <h4 class="text-xl font-semibold mb-2">Lecturas y Recursos Sugeridos</h4>
+                        <ul class="list-disc pl-6 space-y-1">
+                            <li class="mt-1 text-gray-300">
+                                <a class="text-blue-400 underline hover:text-blue-200 transition-colors" href="#" target="_blank" rel="noreferrer">Artículo: Funciones Hash Criptográficas y su impacto legal (Revista UNIE)</a>
+                            </li>
+                            <li class="mt-1 text-gray-300">
+                                <a class="text-blue-400 underline hover:text-blue-200 transition-colors" href="#" target="_blank" rel="noreferrer">Vídeo: Qué es el Efecto Avalancha en Criptografía</a>
+                            </li>
+                        </ul>
+                    </div>
+                </section>
+
+                <section>
+                    <h3>Evaluación Formativa</h3>
+                    <p class="text-gray-400">*One-minute paper*: Si modificas un único bit en un documento de 1MB, ¿cuánto cambia su hash SHA-256?</p>
+                </section>
+
+            </div>
+            
+            <footer class="mt-12 pt-6 border-t border-slate-700">
+                <p class="text-sm text-gray-500">
+                    **Resultados de Aprendizaje (RA):** RA1.2, RA2.1<br/>
+                    **Competencias:** CE1
+                </p>
+            </footer>
+        </article>
+    </div>
+
+    <script>
+        // ==========================================================
+        // VANILLA JS SIMULATION: HASHING DEMO (Efecto Avalancha)
+        // ==========================================================
+        const inputText = document.getElementById('input-text');
+        const outputHash = document.getElementById('output-hash');
+        let previousHash = '';
+        
+        // Mock Hashing Function (Simula la irreversibilidad y el efecto avalancha)
+        function mockSHA256(text) {
+            // Utilizamos una codificación simple para generar una salida larga y determinista.
+            if (!text) return '0000000000000000000000000000000000000000000000000000000000000000';
+            
+            // Simula un hash de 64 caracteres hex
+            const longString = btoa(text + text).repeat(2); 
+            let hash = Array.from(longString)
+                .map(c => c.charCodeAt(0).toString(16))
+                .join('');
+                
+            // Limita la longitud y asegura que sea determinista para la misma entrada
+            return hash.substring(0, 64).padEnd(64, 'f');
+        }
+
+        function updateHash() {
+            const currentText = inputText.value;
+            const currentHash = mockSHA256(currentText);
+
+            if (currentHash !== previousHash) {
+                // Visual feedback for Avalanche Effect
+                outputHash.classList.remove('bg-slate-900');
+                outputHash.classList.add('bg-red-900/50');
+                setTimeout(() => {
+                    outputHash.classList.remove('bg-red-900/50');
+                    outputHash.classList.add('bg-slate-900');
+                }, 100); 
+            }
+            
+            outputHash.textContent = currentHash;
+            previousHash = currentHash;
+        }
+
+        inputText.addEventListener('input', updateHash);
+        updateHash(); // Initial hash calculation
+
+        // ==========================================================
+        // VANILLA JS COMPONENT: PROGRESO (Reemplazo de Progreso.tsx)
+        // ==========================================================
+        const progresoBtn = document.getElementById('progreso-btn');
+        const slug = 'session-02-historia-confianza-hash';
+        const key = `prog:${slug}`;
+
+        function getInitialStatus() {
+            if (typeof window !== 'undefined') {
+                return localStorage.getItem(key) === '1';
+            }
+            return false;
+        }
+
+        let done = getInitialStatus();
+
+        function updateProgresoUI() {
+            if (done) {
+                progresoBtn.textContent = 'Completada ✅';
+                progresoBtn.className = 'text-sm border rounded px-3 py-1 font-medium transition-all bg-green-100 border-green-300 text-green-700 hover:bg-green-200 focus:ring-green-500';
+            } else {
+                progresoBtn.textContent = 'Marcar como completada';
+                progresoBtn.className = 'text-sm border rounded px-3 py-1 font-medium transition-all bg-white border-gray-300 text-gray-700 hover:bg-gray-50 focus:ring-gray-400';
+            }
+        }
+
+        progresoBtn.addEventListener('click', () => {
+            if (typeof window !== 'undefined') {
+                done = !done;
+                const v = done ? '1' : '0'; 
+                localStorage.setItem(key, v); 
+                updateProgresoUI();
+            }
+        });
+
+        updateProgresoUI();
+        
+    </script>
+</body>
+</html>
