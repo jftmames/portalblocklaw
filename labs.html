@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laboratorios Guiados</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #0f172a; color: white; }
+        .font-bangers { font-family: 'Bangers', cursive; letter-spacing: 1px; }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <div class="container mx-auto max-w-4xl">
+        <header class="mb-6">
+             <a href="index.html" class="text-blue-400 hover:text-blue-200 font-bold">&larr; Volver al Portal</a>
+            <h1 class="text-4xl md:text-5xl font-bangers text-white mt-4">LABORATORIOS GUIADOS</h1>
+        </header>
+
+        <p class="text-lg text-gray-400 mb-8">Estos laboratorios, generalmente en **Google Colab**, te permiten interactuar con los fundamentos técnicos de Blockchain.</p>
+
+        <ul class="grid gap-4">
+            <li class="border border-slate-700 rounded-xl p-4 hover:bg-slate-800 transition-colors shadow-sm">
+                <a class="block" href="hash-demo-colab.html">
+                    <h2 class="text-xl font-semibold text-blue-400 hover:underline">Laboratorio 1: Hash demo (Colab)</h2>
+                    <p class="text-sm text-gray-400 mt-1">Comprende la inmutabilidad y sensibilidad del hash SHA-256.</p>
+                    <span class="text-xs text-gray-500 mt-2 block">Ver guía de hash-demo-colab.html</span>
+                </a>
+            </li>
+            <li class="border border-slate-700 rounded-xl p-4 hover:bg-slate-800 transition-colors shadow-sm">
+                <a class="block" href="rsa-simplificado-colab.html">
+                    <h2 class="text-xl font-semibold text-blue-400 hover:underline">Laboratorio 2: RSA simplificado (Colab)</h2>
+                    <p class="text-sm text-gray-400 mt-1">Demostración de clave pública/privada y la firma digital.</p>
+                    <span class="text-xs text-gray-500 mt-2 block">Ver guía de rsa-simplificado-colab.html</span>
+                </a>
+            </li>
+            
+            </ul>
+    </div>
+
+</body>
+</html>
