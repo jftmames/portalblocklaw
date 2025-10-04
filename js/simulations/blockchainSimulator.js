@@ -1,6 +1,6 @@
-// Archivo: js/simulations/blockchainSimulator.js (Solución Final)
+// Archivo: js/simulations/blockchainSimulator.js (Versión Funcional)
 
-// Importamos la función mockSHA256 desde utils.js
+// 🛑 ESTE IMPORT AHORA FUNCIONARÁ GRACIAS AL 'export' EN utils.js 🛑
 import { mockSHA256 } from '../utils.js';
 
 const BLOCK_WIDTH = 280;
@@ -13,7 +13,6 @@ let dataBlock1Input, recalculateBtn;
 let initialHash1Value; 
 const initialDataValue = 'Transacción A: 50 BTC'; 
 
-// --- Variables de Bloque (Se inicializan aquí, pero los valores se fijan en drawChain) ---
 let block1, block2; 
 
 
@@ -27,14 +26,12 @@ function initializeGlobalElements() {
         return false;
     }
     
-    // 🛑 Punto de Corrección: Obtener el contexto después de verificar el elemento 🛑
     ctx = canvas.getContext('2d');
     if (!ctx) {
          console.error("Failed to get 2D context.");
          return false;
     }
     
-    // Inicializar bloques y valores fijos
     canvas.width = canvas.parentElement.clientWidth;
     canvas.height = 400;
 
@@ -64,7 +61,6 @@ function initializeGlobalElements() {
     return true;
 }
 
-// ... (drawBlock function remains the same) ...
 function drawBlock(block, index, isValid, currentHash) {
     const HASH_COLOR = '#60a5fa'; 
     const PREV_HASH_COLOR = '#fcd34d'; 
@@ -100,25 +96,19 @@ function drawBlock(block, index, isValid, currentHash) {
 
 
 export function drawChain() {
-    if (!ctx) return; // Parar si el contexto falló
+    if (!ctx) return; 
 
-    // Redimensionar Canvas
     canvas.width = canvas.parentElement.clientWidth;
     canvas.height = 400;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     
-    // Re-inicializar posiciones con el tamaño actual del canvas
-    initializeBlocks(canvas.height);
+    initializeGlobalElements();
 
-    // --- Chain Logic ---
-    
     block1.data = dataBlock1Input.value;
     const currentHash1 = mockSHA256(block1.data + block1.prevHash); 
 
-    // Check validity: The chain is BROKEN if the CURRENT hash of B1 != initialHash1Value
     const isBlock2Valid = (currentHash1 === initialHash1Value); 
 
-    // Block 2 *siempre* espera el hash inicial
     block2.prevHash = initialHash1Value; 
     
     const currentHash2 = mockSHA256(block2.data + block2.prevHash);
@@ -165,6 +155,5 @@ export function initBlockchainSimulator() {
     recalculateBtn.addEventListener('click', drawChain);
     window.addEventListener('resize', drawChain);
     
-    // Llamada inicial para dibujar
     drawChain(); 
 }
