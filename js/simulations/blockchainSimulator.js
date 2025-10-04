@@ -1,42 +1,53 @@
-// Archivo: js/simulations/blockchainSimulator.js (Corregido)
+// Archivo: js/simulations/blockchainSimulator.js (Versión Final Corregida)
 
-// Importamos la función mockSHA256 desde utils.js para asegurar que el scope sea correcto
+// Importamos la función mockSHA256 desde utils.js
 import { mockSHA256 } from '../utils.js';
 
 const BLOCK_WIDTH = 280;
 const BLOCK_HEIGHT = 160;
 const PADDING = 40;
-const INITIAL_HASH = '0000000000000000'; 
+const INITIAL_HASH = '00000000000000000000000000000000'; // Full length for consistency
 
 let canvas, ctx;
 let dataBlock1Input, recalculateBtn;
 let block1, block2;
-let initialDataValue = 'Transacción A: 50 BTC'; // Almacenar el valor inicial para la comprobación
+let initialHash1Value; // Almacenará el hash del Bloque 1 en el estado inicial (para la validez)
 
+// Inicializa las variables de bloque y sus posiciones
 function initializeBlocks(canvasHeight) {
     const centerY = canvasHeight / 2;
+    
+    // Si los bloques no han sido creados o el canvas no está disponible, salimos
+    if (!canvas) return; 
+
+    // Estado inicial de los bloques (datos fijos)
+    const initialData = dataBlock1Input ? dataBlock1Input.value : 'Transacción A: 50 BTC';
     
     block1 = { 
         x: PADDING, 
         y: centerY - BLOCK_HEIGHT / 2, 
-        data: dataBlock1Input.value, 
+        data: initialData, 
         prevHash: INITIAL_HASH 
     };
     block2 = { 
         x: canvas.width - BLOCK_WIDTH - PADDING, 
         y: centerY - BLOCK_HEIGHT / 2, 
         data: 'Transacción B: 10 BTC', 
-        prevHash: '' // Será el hash inicial de Block 1
+        prevHash: '' // Se llenará con initialHash1Value
     };
     
-    // Asegurar que el input tenga el valor inicial al cargar
-    if(!dataBlock1Input.value) dataBlock1Input.value = initialDataValue;
+    // 1. Calcular el hash de Block 1 en estado GENESIS
+    initialHash1Value = mockSHA256(block1.data + block1.prevHash);
+    
+    // 2. Establecer el Prev Hash del Bloque 2 a este valor fijo inicial
+    block2.prevHash = initialHash1Value;
 }
 
 function drawBlock(block, index, isValid, currentHash) {
+    // Colores para estética moderna y de alto contraste
     const HASH_COLOR = '#60a5fa'; // Blue-400
     const PREV_HASH_COLOR = '#fcd34d'; // Amber-300
-    const DATA_COLOR = '#e2e8f0'; 
+    const DATA_COLOR = '#e2e8f0'; // Slate-200
     
     const BORDER_COLOR = isValid ? '#10b981' : '#ef4444'; // Emerald (OK) or Red (BROKEN)
     const BG_COLOR = '#1e293b'; // Slate-800
@@ -57,17 +68,20 @@ function drawBlock(block, index, isValid, currentHash) {
     ctx.font = '12px Fira Code';
     ctx.textAlign = 'left';
     
+    // 🛑 ATENCIÓN: Se ajustan las coordenadas Y para texto para visibilidad 🛑
+    
     // Data
     ctx.fillStyle = DATA_COLOR;
-    ctx.fillText(`Data: ${block.data.substring(0, 30)}${block.data.length > 30 ? '...' : ''}`, block.x + 10, block.y + 60);
+    ctx.fillText(`Data: ${block.data.substring(0, 30)}${block.data.length > 30 ? '...' : ''}`, block.x + 10, block.y + 65); // Ajustado a 65
     
     // Prev Hash (Linkage Check)
     ctx.fillStyle = PREV_HASH_COLOR; 
-    ctx.fillText(`Prev Hash: ${block.prevHash.substring(0, 16)}...`, block.x + 10, block.y + 95);
+    // Usamos el hash que el bloque "espera" tener, que es el hash de B1.
+    ctx.fillText(`Prev Hash: ${block.prevHash.substring(0, 16)}...`, block.x + 10, block.y + 100); // Ajustado a 100
     
     // Current Hash (Proof)
     ctx.fillStyle = HASH_COLOR;
-    ctx.fillText(`Hash: ${currentHash.substring(0, 16)}...`, block.x + 10, block.y + 125);
+    ctx.fillText(`Hash: ${currentHash.substring(0, 16)}...`, block.x + 10, block.y + 135); // Ajustado a 135
     
     return currentHash;
 }
@@ -80,29 +94,28 @@ function drawChain() {
     // Inicializar bloques con el tamaño actual del canvas
     initializeBlocks(canvas.height);
 
-    // --- Chain Logic ---
-    
     // 1. Obtener datos actuales del input
     block1.data = dataBlock1Input.value;
     
-    // 2. Calcular el hash del Bloque 1
+    // 2. Calcular el hash actual de Block 1
     const currentHash1 = mockSHA256(block1.data + block1.prevHash); 
 
     // 3. Determinar la validez de la cadena
-    // En la inicialización, el hash del Bloque 1 se iguala al Prev Hash del Bloque 2.
-    // Si el usuario modifica el input, currentHash1 cambia, rompiendo la igualdad.
-    const isBlock2Valid = block2.prevHash === currentHash1;
+    // La cadena está rota si el hash actual del Bloque 1 NO coincide con el Prev Hash fijo de Block 2.
+    const isBlock2Valid = (currentHash1 === initialHash1Value); 
 
-    // Actualizar el Prev Hash de Block 2 con el hash actual de Block 1
-    block2.prevHash = currentHash1; 
-    
-    // Calcular el hash del Bloque 2 (necesita el hash roto para el cálculo)
+    // 4. Actualizar la visualización de Prev Hash del Bloque 2 
+    // Siempre muestra el hash que espera si la cadena está rota,
+    // o el hash actual si la cadena es válida.
+    block2.prevHash = initialHash1Value; // El hash que Block 2 *espera*
+
+    // 5. Calcular el hash del Bloque 2 (usa el Prev Hash esperado para el cálculo)
     const currentHash2 = mockSHA256(block2.data + block2.prevHash);
 
 
     // --- Drawing ---
     
-    drawBlock(block1, 1, true, currentHash1);
+    drawBlock(block1, 1, true, currentHash1); // Block 1 siempre es válido
     drawBlock(block2, 2, isBlock2Valid, currentHash2);
 
     // Draw Linkage Arrow
@@ -141,14 +154,13 @@ export function initBlockchainSimulator() {
     dataBlock1Input = document.getElementById('data-block1');
     recalculateBtn = document.getElementById('recalculate-btn');
 
-    // Inicializar los bloques para que Block 2 tenga el Prev Hash correcto al inicio
+    // Inicializar bloques y el valor inicial del hash de Block 1
     initializeBlocks(canvas.height);
-    const initialHash1 = mockSHA256(block1.data + block1.prevHash);
-    block2.prevHash = initialHash1;
     
     dataBlock1Input.addEventListener('input', drawChain); 
     recalculateBtn.addEventListener('click', drawChain);
     window.addEventListener('resize', drawChain);
     
+    // Llamada inicial para dibujar
     drawChain(); 
 }
