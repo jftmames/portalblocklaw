@@ -11,7 +11,7 @@
     
     <link href="css/theme.css" rel="stylesheet"> 
     <style>
-        /* Estilos menores para overrides de Canvas */
+        /* Estilos menores para overrides de Canvas y elementos específicos */
         canvas { background-color: #020617; } /* Slate-950 para Canvas */
     </style>
 </head>
@@ -25,6 +25,8 @@
                 <h1 class="text-4xl font-extrabold tracking-tight mt-4 text-white">Qué es Blockchain y por qué importa</h1>
                 <p class="text-lg text-gray-400 mt-1">Introducción · Martes 7 de octubre, 17:00–19:00h</p>
                 
+                <div id="nav-placeholder" class="mt-4"></div>
+
                 <div class="mt-4">
                     <button id="progreso-btn" class="text-sm border rounded px-3 py-1 font-medium transition-all focus:outline-none focus:ring-2 focus:ring-offset-2"></button>
                 </div>
@@ -44,23 +46,11 @@
 
                     <div class="content-block">
                         <h3>Objetivos de la Sesión</h3>
-                        <ul class="list-disc pl-6 text-gray-300 space-y-1">
-                            <li>Definir qué es una cadena de bloques a nivel técnico (bloque, hash, P2P).</li>
-                            <li>Comprender la promesa de la confianza distribuida y su impacto en el derecho.</li>
-                        </ul>
-                    </div>
+                        </div>
 
                     <div class="content-block">
                         <h3>Contenidos Teóricos</h3>
-                        <ol class="list-decimal pl-6 text-gray-300 space-y-1">
-                            <li>El Problema de la Confianza: Intermediarios, contratos y la prueba digital.</li>
-                            <li>Arquitectura Mínima: Bloque, hash (`SHA-256`), enlace y *timestamp*.</li>
-                            <li>Red P2P y Nodos: Quién posee la copia y la inmutabilidad como garantía.</li>
-                        </ol>
-                         <blockquote class="border-l-4 border-yellow-400 pl-4 py-2 italic text-gray-300 mt-4">
-                            La principal innovación de Blockchain no es el dinero, sino la capacidad de alcanzar un consenso inmutable sin una autoridad central.
-                        </blockquote>
-                    </div>
+                        </div>
                 </div>
 
                 <div class="lg:col-span-2">
@@ -71,33 +61,19 @@
                 </div>
             </div>
 
-            <section class="mt-8 pt-6 border-t border-slate-700 content-block">
-                <h3>Actividades y Debate</h3>
-                <ul class="list-disc pl-6 text-gray-300 space-y-2">
-                    <li>**Minicaso Práctico:** ¿Cómo usaría un abogado el hash de un documento para probar su existencia y contenido en un momento dado? Implicaciones en la cadena de custodia.</li>
-                    <li>**Debate:** ¿Es un *smart contract* un contrato, un *trust* o un código?</li>
-                </ul>
-            </section>
-            
-            <footer class="mt-12 pt-6 border-t border-slate-700">
-                <p class="text-sm text-gray-500">
-                    **Resultados de Aprendizaje (RA):** RA1.1, RA1.2<br/>
-                    **Competencias:** CB1, CE1
-                </p>
-            </footer>
-        </article>
+            </article>
     </div>
 
     <script src="js/utils.js" defer></script> 
     
     <script type="module">
         import { initBlockchainSimulator } from './js/simulations/blockchainSimulator.js'; 
+        import { injectNavigation, initProgresoButton } from './js/utils.js'; // Importamos las funciones necesarias
 
         document.addEventListener('DOMContentLoaded', () => {
             // Inicializar utilidades y navegación (globales)
-            // Se asume que injectNavigation existe en utils.js
             injectNavigation();
-            initProgresoButton('session-01-que-es-blockchain');
+            initProgresoButton('session-01-que-es-blockchain'); // ¡Botón arreglado!
             
             // Inicializar la simulación (Lógica desacoplada y mejorada)
             initBlockchainSimulator();
