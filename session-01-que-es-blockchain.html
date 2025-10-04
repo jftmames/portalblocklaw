@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sesión 1: Qué es Blockchain</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Inter:wght@400;700;900&family=Fira+Code:wght@500&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #0f172a; color: white; }
+        .font-bangers { font-family: 'Bangers', cursive; letter-spacing: 1px; }
+        .font-fira { font-family: 'Fira Code', monospace; }
+        .prose h3 { margin-top: 1.5em; margin-bottom: 0.5em; font-size: 1.75rem; border-bottom: 2px solid #334155; padding-bottom: 4px;}
+        canvas { background-color: #1e293b; }
+        .block-box { border: 2px solid #3b82f6; border-radius: 8px; padding: 10px; }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <div class="container mx-auto max-w-6xl">
+        <a href="index.html" class="text-blue-400 hover:text-blue-200 font-bold">&larr; Volver al Portal</a>
+
+        <article>
+            <header class="mb-8 border-b border-slate-700 pb-4">
+                <h1 class="text-4xl font-extrabold tracking-tight mt-4">Qué es Blockchain y por qué importa</h1>
+                <p class="text-lg text-gray-400 mt-1">Introducción · Martes 7 de octubre, 17:00–19:00h</p>
+                
+                <div class="mt-4">
+                    <button id="progreso-btn" class="text-sm border rounded px-3 py-1 font-medium transition-all focus:outline-none focus:ring-2 focus:ring-offset-2"></button>
+                </div>
+            </header>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                
+                <div class="lg:col-span-1 space-y-6">
+                    <h3>Control de la Cadena</h3>
+                     <p class="text-sm text-gray-400">Modifica el dato en el Bloque 1 y pulsa "Recalcular" para ver si el hash de enlace se rompe.</p>
+                    
+                    <div class="bg-slate-800 p-4 rounded-xl border border-blue-700 shadow-lg">
+                        <label for="data-block1" class="block font-bold mb-2 text-blue-300">Dato del Bloque 1:</label>
+                        <textarea id="data-block1" class="w-full p-2 bg-slate-900 border border-slate-700 rounded-lg font-fira text-yellow-300 text-sm" rows="2">Transacción A: 50 BTC</textarea>
+                        <button id="recalculate-btn" class="w-full mt-3 bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 rounded-lg transition duration-300">Recalcular Hash</button>
+                    </div>
+
+                     <h3>Objetivos de la Sesión</h3>
+                    <ul class="list-disc pl-6 text-gray-300 space-y-1">
+                        <li>Definir qué es una cadena de bloques a nivel técnico (bloque, hash, P2P).</li>
+                        <li>Comprender la promesa de la confianza distribuida y su impacto en el derecho.</li>
+                    </ul>
+
+                    <h3>Contenidos Teóricos</h3>
+                    <ol class="list-decimal pl-6 text-gray-300 space-y-1">
+                        <li>El Problema de la Confianza: Intermediarios, contratos y la prueba digital.</li>
+                        <li>Arquitectura Mínima: Bloque, hash (`SHA-256`), enlace y *timestamp*.</li>
+                        <li>Red P2P y Nodos: Quién posee la copia y la inmutabilidad como garantía.</li>
+                    </ol>
+                     <blockquote class="border-l-4 border-yellow-400 pl-4 py-2 italic text-gray-300">
+                        La principal innovación de Blockchain no es el dinero, sino la capacidad de alcanzar un consenso inmutable sin una autoridad central.
+                    </blockquote>
+                </div>
+
+                <div class="lg:col-span-2">
+                    <h3>Visualizador de Cadena (Inmutabilidad)</h3>
+                    <canvas id="blockchainCanvas" class="w-full h-96 rounded-xl border border-slate-600 shadow-2xl"></canvas>
+                </div>
+            </div>
+
+            <section class="mt-8 pt-6 border-t border-slate-700">
+                 <h3>Actividades y Debate</h3>
+                <ul class="list-disc pl-6 text-gray-300 space-y-2">
+                    <li>**Minicaso Práctico:** ¿Cómo usaría un abogado el hash de un documento para probar su existencia y contenido en un momento dado? Implicaciones en la cadena de custodia.</li>
+                    <li>**Debate:** ¿Es un *smart contract* un contrato, un *trust* o un código?</li>
+                </ul>
+            </section>
+            
+            <footer class="mt-12 pt-6 border-t border-slate-700">
+                <p class="text-sm text-gray-500">
+                    **Resultados de Aprendizaje (RA):** RA1.1, RA1.2<br/>
+                    **Competencias:** CB1, CE1
+                </p>
+            </footer>
+        </article>
+    </div>
+
+    <script>
+        // ==========================================================
+        // Mock Hashing Function (Simula la irreversibilidad)
+        // ==========================================================
+        function mockSHA256(text, difficulty = 0) {
+            if (!text) return '0000... (empty)';
+            
+            // Simulación simple: XOR de códigos de caracteres y luego hex
+            let hashValue = 0;
+            for(let i=0; i < text.length; i++) {
+                hashValue = (hashValue << 5) - hashValue + text.charCodeAt(i);
+                hashValue |= 0; 
+            }
+            let mockHash = Math.abs(hashValue).toString(16).padEnd(64, '0');
+            return mockHash.substring(0, 64);
+        }
+
+        // ==========================================================
+        // VANILLA JS SIMULATION: MINIMAL BLOCKCHAIN
+        // ==========================================================
+        const canvas = document.getElementById('blockchainCanvas');
+        const ctx = canvas.getContext('2d');
+        const dataBlock1Input = document.getElementById('data-block1');
+        const recalculateBtn = document.getElementById('recalculate-btn');
+        
+        const BLOCK_WIDTH = 250;
+        const BLOCK_HEIGHT = 150;
+        const PADDING = 50;
+
+        let block1 = { x: PADDING, y: (canvas.height - BLOCK_HEIGHT) / 2, data: dataBlock1Input.value, prevHash: '00000000000000000000000000000000' };
+        let block2 = { x: PADDING * 2 + BLOCK_WIDTH, y: (canvas.height - BLOCK_HEIGHT) / 2, data: 'Transacción B: 10 BTC', prevHash: '' };
+
+        function drawBlock(block, index, isValid) {
+            const COLOR = isValid ? '#16a34a' : '#ef4444'; // green-600 or red-500
+            
+            // Draw Box
+            ctx.strokeStyle = COLOR;
+            ctx.fillStyle = '#374151'; // slate-700
+            ctx.lineWidth = 4;
+            ctx.fillRect(block.x, block.y, BLOCK_WIDTH, BLOCK_HEIGHT);
+            ctx.strokeRect(block.x, block.y, BLOCK_WIDTH, BLOCK_HEIGHT);
+            
+            // Draw Text
+            ctx.fillStyle = 'white';
+            ctx.font = 'bold 16px Inter';
+            ctx.textAlign = 'center';
+            ctx.fillText(`BLOQUE ${index}`, block.x + BLOCK_WIDTH / 2, block.y + 25);
+            
+            ctx.font = '10px Fira Code';
+            ctx.textAlign = 'left';
+            
+            // Hash Anterior
+            ctx.fillStyle = '#fde047'; // yellow-300
+            ctx.fillText(`Prev Hash: ${block.prevHash.substring(0, 16)}...`, block.x + 10, block.y + 50);
+            
+            // Hash Actual
+            const currentHash = mockSHA256(block.data + block.prevHash);
+            ctx.fillStyle = '#38bdf8'; // sky-400
+            ctx.fillText(`Hash: ${currentHash.substring(0, 16)}...`, block.x + 10, block.y + 70);
+            
+            // Data
+            ctx.fillStyle = 'white';
+            ctx.fillText(`Data: ${block.data.substring(0, 20)}...`, block.x + 10, block.y + 95);
+            
+            return currentHash;
+        }
+
+        function drawChain() {
+            canvas.width = canvas.parentElement.clientWidth;
+            block1.x = PADDING;
+            block2.x = canvas.width - BLOCK_WIDTH - PADDING;
+            
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Calculate Block 1
+            block1.data = dataBlock1Input.value;
+            const hash1 = drawBlock(block1, 1, true);
+
+            // Link Block 2
+            block2.prevHash = hash1;
+            const expectedPrevHash2 = block1.prevHash; // To demonstrate integrity check
+
+            const hash1Check = mockSHA256(block1.data + block1.prevHash);
+            const isValid = hash1Check === block2.prevHash;
+
+            // Draw Block 2
+            const hash2 = drawBlock(block2, 2, isValid);
+
+            // Draw Linkage Arrow
+            const startX = block1.x + BLOCK_WIDTH;
+            const startY = block1.y + 60;
+            const endX = block2.x;
+            const endY = block2.y + 60;
+            
+            ctx.strokeStyle = isValid ? '#16a34a' : '#ef4444';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.moveTo(startX, startY);
+            ctx.lineTo(endX, endY);
+            ctx.stroke();
+
+            // Draw arrow head (optional, but nice visual)
+            ctx.fillStyle = isValid ? '#16a34a' : '#ef4444';
+            ctx.beginPath();
+            ctx.moveTo(endX, endY);
+            ctx.lineTo(endX - 10, endY - 5);
+            ctx.lineTo(endX - 10, endY + 5);
+            ctx.fill();
+        }
+
+        recalculateBtn.addEventListener('click', drawChain);
+        window.addEventListener('resize', drawChain);
+        drawChain(); 
+
+        // ==========================================================
+        // VANILLA JS COMPONENT: PROGRESO (Reemplazo de Progreso.tsx)
+        // ==========================================================
+        const progresoBtn = document.getElementById('progreso-btn');
+        const slug = 'session-01-que-es-blockchain';
+        const key = `prog:${slug}`;
+
+        function getInitialStatus() {
+            if (typeof window !== 'undefined') {
+                return localStorage.getItem(key) === '1';
+            }
+            return false;
+        }
+
+        let done = getInitialStatus();
+
+        function updateProgresoUI() {
+            if (done) {
+                progresoBtn.textContent = 'Completada ✅';
+                progresoBtn.className = 'text-sm border rounded px-3 py-1 font-medium transition-all bg-green-100 border-green-300 text-green-700 hover:bg-green-200 focus:ring-green-500';
+            } else {
+                progresoBtn.textContent = 'Marcar como completada';
+                progresoBtn.className = 'text-sm border rounded px-3 py-1 font-medium transition-all bg-white border-gray-300 text-gray-700 hover:bg-gray-50 focus:ring-gray-400';
+            }
+        }
+
+        progresoBtn.addEventListener('click', () => {
+            if (typeof window !== 'undefined') {
+                done = !done;
+                const v = done ? '1' : '0'; 
+                localStorage.setItem(key, v); 
+                updateProgresoUI();
+            }
+        });
+
+        updateProgresoUI();
+    </script>
+</body>
+</html>
