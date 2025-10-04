@@ -1,5 +1,7 @@
-// Archivo: js/simulations/blockchainSimulator.js
-// Asume que mockSHA256 está disponible en el scope (importado desde utils.js)
+// Archivo: js/simulations/blockchainSimulator.js (Corregido)
+
+// Importamos la función mockSHA256 desde utils.js para asegurar que el scope sea correcto
+import { mockSHA256 } from '../utils.js';
 
 const BLOCK_WIDTH = 280;
 const BLOCK_HEIGHT = 160;
@@ -9,13 +11,8 @@ const INITIAL_HASH = '0000000000000000';
 let canvas, ctx;
 let dataBlock1Input, recalculateBtn;
 let block1, block2;
+let initialDataValue = 'Transacción A: 50 BTC'; // Almacenar el valor inicial para la comprobación
 
-// Función para obtener mockSHA256 del scope global o de utils.js
-// Usamos un import explícito en el HTML, por lo que mockSHA256 estará disponible en utils.js
-// Asumimos que mockSHA256 se importa en el script type="module"
-import { mockSHA256 } from '../utils.js';
-
-// Inicializa las variables de bloque y sus posiciones
 function initializeBlocks(canvasHeight) {
     const centerY = canvasHeight / 2;
     
@@ -29,17 +26,19 @@ function initializeBlocks(canvasHeight) {
         x: canvas.width - BLOCK_WIDTH - PADDING, 
         y: centerY - BLOCK_HEIGHT / 2, 
         data: 'Transacción B: 10 BTC', 
-        prevHash: '' 
+        prevHash: '' // Será el hash inicial de Block 1
     };
     
-    if(!dataBlock1Input.value) dataBlock1Input.value = block1.data;
+    // Asegurar que el input tenga el valor inicial al cargar
+    if(!dataBlock1Input.value) dataBlock1Input.value = initialDataValue;
 }
 
 function drawBlock(block, index, isValid, currentHash) {
     const HASH_COLOR = '#60a5fa'; // Blue-400
     const PREV_HASH_COLOR = '#fcd34d'; // Amber-300
+    const DATA_COLOR = '#e2e8f0'; 
     
-    const BORDER_COLOR = isValid ? '#10b981' : '#ef4444'; // Emerald or Red
+    const BORDER_COLOR = isValid ? '#10b981' : '#ef4444'; // Emerald (OK) or Red (BROKEN)
     const BG_COLOR = '#1e293b'; // Slate-800
 
     // Draw Box
@@ -59,7 +58,7 @@ function drawBlock(block, index, isValid, currentHash) {
     ctx.textAlign = 'left';
     
     // Data
-    ctx.fillStyle = '#e2e8f0'; // Slate-200
+    ctx.fillStyle = DATA_COLOR;
     ctx.fillText(`Data: ${block.data.substring(0, 30)}${block.data.length > 30 ? '...' : ''}`, block.x + 10, block.y + 60);
     
     // Prev Hash (Linkage Check)
@@ -78,28 +77,26 @@ function drawChain() {
     canvas.height = 400;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     
-    // Re-initialize blocks based on current canvas size
+    // Inicializar bloques con el tamaño actual del canvas
     initializeBlocks(canvas.height);
 
     // --- Chain Logic ---
     
-    const initialData = 'Transacción A: 50 BTC';
+    // 1. Obtener datos actuales del input
     block1.data = dataBlock1Input.value;
     
-    // Check if data was tampered with (the core teaching moment)
-    const isDataModified = block1.data.trim() !== initialData.trim();
-    
-    // Calculate Block 1's CURRENT hash
-    const currentHash1 = mockSHA256(block1.data);
-    
-    // Block 2's integrity is broken if the hash of the data it contains does not match
-    // what it was initialized with. We simplify: Block 2 is valid IF Block 1's data is original.
-    const isBlock2Valid = !isDataModified; 
-    
-    // The Prev Hash of Block 2 must be the CURRENT hash of Block 1
+    // 2. Calcular el hash del Bloque 1
+    const currentHash1 = mockSHA256(block1.data + block1.prevHash); 
+
+    // 3. Determinar la validez de la cadena
+    // En la inicialización, el hash del Bloque 1 se iguala al Prev Hash del Bloque 2.
+    // Si el usuario modifica el input, currentHash1 cambia, rompiendo la igualdad.
+    const isBlock2Valid = block2.prevHash === currentHash1;
+
+    // Actualizar el Prev Hash de Block 2 con el hash actual de Block 1
     block2.prevHash = currentHash1; 
     
-    // Calculate Block 2's hash
+    // Calcular el hash del Bloque 2 (necesita el hash roto para el cálculo)
     const currentHash2 = mockSHA256(block2.data + block2.prevHash);
 
 
@@ -144,10 +141,14 @@ export function initBlockchainSimulator() {
     dataBlock1Input = document.getElementById('data-block1');
     recalculateBtn = document.getElementById('recalculate-btn');
 
+    // Inicializar los bloques para que Block 2 tenga el Prev Hash correcto al inicio
+    initializeBlocks(canvas.height);
+    const initialHash1 = mockSHA256(block1.data + block1.prevHash);
+    block2.prevHash = initialHash1;
+    
     dataBlock1Input.addEventListener('input', drawChain); 
     recalculateBtn.addEventListener('click', drawChain);
     window.addEventListener('resize', drawChain);
     
-    // Initial draw
     drawChain(); 
 }
